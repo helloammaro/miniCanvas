@@ -6,11 +6,11 @@ class CourseManager:
         self.counter = 0
 
     def create_a_course(self, course_code, semester, teacher_list):
-        ## automatically generate a courseId
+        
         new_course_id = self.generate_id()
         new_course = Course(new_course_id, course_code, semester, teacher_list)
 
-        # add the new course to the list
+        
         self.course_list.append(new_course)
         return new_course_id
 
@@ -27,10 +27,7 @@ class CourseManager:
             
         return None
 
-    def sync_with_database(self):
-        # will not implement here
-        pass
-
+        
 class Course:
     def __init__(self, course_id, course_code, semester, teacher_list):
         self.course_id = course_id
@@ -43,15 +40,26 @@ class Course:
         self.assignment_counter = 0
 
     def import_students(self, student_list):
-        # the admin should import the students to a course
         self.student_list = student_list
-    
+
+    def validate_teacher_list(self):
+        for teacher in self.teacher_list:
+            if not isinstance(teacher, str):
+                return False
+        return True
+
+    def validate_student_list(self):
+        for student in self.student_list:
+            if not isinstance(student, str):
+                return False
+        return True
+
     def create_an_assignment(self, due_date):
         new_assignment_id = self.generate_assignment_id()
-        new_assignment = Assignment(new_assignment_id, 
+        new_assignment = Assignment(new_assignment_id,
                                     due_date, self.course_id)
         self.assignment_list.append(new_assignment)
-    
+
     def generate_assignment_id(self):
         self.assignment_counter += 1
         return self.assignment_counter
